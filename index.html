@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,7 +20,7 @@
     --danger: #dc2626;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
 
   header { background: var(--white); border-bottom: 1px solid var(--border); padding: 1rem 1.5rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: .75rem; }
   header h1 { font-size: 1.25rem; font-weight: 600; letter-spacing: -.02em; }
@@ -29,12 +29,10 @@
   .status-pill { font-size: .75rem; padding: .25rem .75rem; border-radius: 999px; background: #fef9c3; color: #713f12; border: 1px solid #fde68a; }
   .status-pill.connected { background: #dcfce7; color: #15803d; border-color: #bbf7d0; }
   .admin-badge { display: inline-flex; align-items: center; gap: .35rem; font-size: .75rem; font-weight: 600; padding: .25rem .75rem; border-radius: 999px; background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
-  .identity-bar { font-size: .8rem; color: var(--muted); display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; }
+  .identity-bar { font-size: .8rem; color: var(--muted); }
   .identity-bar strong { color: var(--text); font-weight: 600; }
-  .switch-link { font-size: .75rem; color: var(--accent); cursor: pointer; text-decoration: underline; background: none; border: none; padding: 0; font-family: inherit; }
-  .switch-link:hover { color: #1d4ed8; }
 
-  main { padding: 1.5rem; max-width: 1300px; margin: 0 auto; }
+  main { padding: 1.5rem; max-width: 1300px; margin: 0 auto; width: 100%; flex: 1; }
 
   /* Identity screen */
   .identity-screen { max-width: 420px; margin: 3rem auto; background: var(--white); border: 1px solid var(--border); border-radius: 16px; padding: 2rem; }
@@ -79,21 +77,34 @@
   .unbook-btn { font-size: .65rem; border: 1px solid var(--mine); color: var(--mine); background: transparent; border-radius: 4px; padding: .1rem .35rem; cursor: pointer; flex-shrink: 0; }
   .unbook-btn:hover { background: var(--mine); color: white; }
 
+  /* Admin expanded cells */
+  td.slot.admin-cell { min-width: 180px; vertical-align: top; padding: .6rem .75rem; cursor: default; }
+  td.slot.admin-cell:hover { background: var(--taken-light); }
+  td.slot.admin-cell.free-cell { background: var(--white); cursor: pointer; }
+  td.slot.admin-cell.free-cell:hover { background: var(--accent-light); }
+  .admin-cell-inner { display: flex; flex-direction: column; gap: .2rem; }
+  .admin-kid { font-size: .82rem; font-weight: 700; color: var(--taken); }
+  .admin-detail { font-size: .73rem; color: var(--muted); }
+  .admin-detail span { color: var(--text); font-weight: 500; }
+  .admin-delete { margin-top: .4rem; font-size: .7rem; border: 1px solid var(--danger); color: var(--danger); background: transparent; border-radius: 4px; padding: .15rem .5rem; cursor: pointer; align-self: flex-start; }
+  .admin-delete:hover { background: var(--danger); color: white; }
+
   .legend { display: flex; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap; }
   .legend-item { display: flex; align-items: center; gap: .4rem; font-size: .8rem; color: var(--muted); }
   .legend-dot { width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; }
 
-  /* Confirm modal */
+  /* Modals */
   .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.4); z-index: 100; align-items: center; justify-content: center; }
   .modal-overlay.open { display: flex; }
   .modal { background: var(--white); border-radius: 16px; padding: 1.75rem; max-width: 380px; width: 90%; }
   .modal h2 { font-size: 1.1rem; font-weight: 600; margin-bottom: .25rem; }
   .modal .slot-info { font-size: .85rem; color: var(--muted); margin-bottom: 1rem; padding: .6rem .9rem; background: var(--bg); border-radius: 8px; }
-  .modal .identity-summary { font-size: .85rem; margin-bottom: .5rem; padding: .6rem .9rem; background: var(--mine-light); border-radius: 8px; color: var(--mine); }
+  .modal .identity-summary { font-size: .85rem; margin-bottom: .75rem; padding: .6rem .9rem; background: var(--mine-light); border-radius: 8px; color: var(--mine); }
   .modal-actions { display: flex; gap: .65rem; margin-top: 1.25rem; }
   .btn-cancel { background: transparent; border: 1px solid var(--border); color: var(--muted); }
   .btn-cancel:hover { background: var(--bg); }
   .modal-error { font-size: .8rem; color: var(--danger); margin-top: .5rem; min-height: 1.1rem; }
+  .modal-success { font-size: .8rem; color: var(--taken); margin-top: .5rem; }
 
   .firebase-setup { background: #fffbeb; border: 1px solid #fde68a; border-radius: 12px; padding: 1.25rem; margin-bottom: 1.5rem; }
   .firebase-setup h3 { font-size: .95rem; font-weight: 600; color: #92400e; margin-bottom: .5rem; }
@@ -102,6 +113,17 @@
   .firebase-setup input:focus { border-color: var(--accent); }
   .firebase-setup .hint { font-size: .78rem; color: #a16207; font-style: italic; }
   .config-panel[hidden] { display: none; }
+
+  /* Recovery footer */
+  footer { border-top: 1px solid var(--border); padding: 1.25rem 1.5rem; text-align: center; }
+  .recovery-toggle { font-size: .78rem; color: var(--muted); background: none; border: none; cursor: pointer; text-decoration: underline; font-family: inherit; }
+  .recovery-toggle:hover { color: var(--text); }
+  .recovery-form { max-width: 360px; margin: 1rem auto 0; background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 1.25rem; text-align: left; }
+  .recovery-form h3 { font-size: .9rem; font-weight: 600; margin-bottom: .4rem; }
+  .recovery-form p { font-size: .8rem; color: var(--muted); margin-bottom: 1rem; line-height: 1.5; }
+  .recovery-form .form-group { margin-bottom: .75rem; }
+  .recovery-form .form-group label { font-size: .78rem; }
+  .recovery-form .form-group input { font-size: .85rem; padding: .45rem .75rem; }
 </style>
 </head>
 <body>
@@ -110,8 +132,7 @@
   <h1>Planning <span>Fancy Fair 2026</span></h1>
   <div class="header-right">
     <div class="identity-bar" id="identity-bar" style="display:none">
-      <span>Connecté en tant que <strong id="identity-name"></strong></span>
-      <button class="switch-link" onclick="switchUser()">Changer d'utilisateur</button>
+      <span>Connecté : <strong id="identity-name"></strong></span>
     </div>
     <span class="status-pill" id="status-pill">● Connexion…</span>
     <span class="admin-badge" id="admin-badge" style="display:none">🔑 Admin</span>
@@ -120,7 +141,7 @@
 
 <main>
 
-  <!-- Identity screen (shown when no identity stored) -->
+  <!-- Identity screen -->
   <div id="identity-screen" class="identity-screen" style="display:none">
     <h2>Bienvenue 👋</h2>
     <p>Veuillez entrer vos coordonnées pour vous inscrire aux activités. Vos informations seront mémorisées sur cet appareil.</p>
@@ -144,14 +165,14 @@
     <button class="btn btn-primary" style="width:100%;margin-top:.5rem;justify-content:center" onclick="saveIdentity()">Accéder au planning →</button>
   </div>
 
-  <!-- Main grid area (hidden until identity confirmed) -->
+  <!-- Main grid area -->
   <div id="grid-area" style="display:none">
 
-    <!-- Firebase setup banner (admin only) -->
+    <!-- Firebase setup (admin only) -->
     <div class="firebase-setup" id="firebase-setup">
       <h3>⚙️ Configuration Firebase (une seule fois)</h3>
-      <p>Cette application nécessite une base de données Firebase gratuite. Créez-en une sur <a href="https://console.firebase.google.com" target="_blank">console.firebase.google.com</a> → Nouveau projet → Realtime Database → Démarrer en <strong>mode test</strong>. Collez l'URL ci-dessous :</p>
-      <input type="text" id="fb-url-input" placeholder="https://YOUR-PROJECT-default-rtdb.firebaseio.com" />
+      <p>Cette application nécessite une base de données Firebase. Créez-en une sur <a href="https://console.firebase.google.com" target="_blank">console.firebase.google.com</a> → Nouveau projet → Realtime Database → Démarrer en <strong>mode test</strong>.</p>
+      <input type="text" id="fb-url-input" placeholder="https://votre-projet-default-rtdb.firebaseio.com" />
       <div class="hint">Ex. : https://mon-projet-default-rtdb.firebaseio.com</div>
       <div style="margin-top:.75rem">
         <button class="btn btn-primary btn-sm" onclick="saveFirebaseUrl()">Enregistrer &amp; Connecter</button>
@@ -183,7 +204,7 @@ Jeux en bois</textarea>
       </div>
       <div class="config-group" style="margin-top:1rem">
         <label>Titre de l'événement</label>
-        <input type="text" id="cfg-title" value="Fancy Fair 2026">
+        <input type="text" id="cfg-title" value="Fancy Faire 2026">
       </div>
       <div class="config-actions">
         <button class="btn btn-primary btn-sm" onclick="applyConfig()">Appliquer &amp; Enregistrer</button>
@@ -216,7 +237,6 @@ Jeux en bois</textarea>
     <h2>Confirmer l'inscription</h2>
     <div class="slot-info" id="modal-slot-info">—</div>
     <div class="identity-summary" id="modal-identity-summary"></div>
-    <p style="font-size:.82rem;color:var(--muted)">Pas vous ? <button class="switch-link" onclick="closeModal();switchUser()">Changer d'utilisateur</button></p>
     <div class="modal-error" id="modal-error"></div>
     <div class="modal-actions">
       <button class="btn btn-primary" onclick="confirmSignup()">Confirmer</button>
@@ -225,11 +245,43 @@ Jeux en bois</textarea>
   </div>
 </div>
 
+<!-- Recovery footer -->
+<footer>
+  <button class="recovery-toggle" onclick="toggleRecovery()">Vous avez changé d'appareil et ne retrouvez plus vos inscriptions ?</button>
+  <div id="recovery-form" class="recovery-form" style="display:none">
+    <h3>Récupérer mes inscriptions</h3>
+    <p>Remplissez vos informations exactement comme lors de votre première inscription. Vos inscriptions existantes seront à nouveau visibles sur cet appareil.</p>
+    <div class="form-group">
+      <label>Votre nom (parent)</label>
+      <input type="text" id="rec-name" placeholder="ex. Sophie Martin" autocomplete="name" />
+    </div>
+    <div class="form-group">
+      <label>Votre adresse e-mail</label>
+      <input type="email" id="rec-email" placeholder="vous@exemple.com" autocomplete="email" />
+    </div>
+    <div class="form-group">
+      <label>Prénom de l'enfant</label>
+      <input type="text" id="rec-kid" placeholder="ex. Emma" autocomplete="off" />
+    </div>
+    <div class="form-group">
+      <label>Classe</label>
+      <input type="text" id="rec-class" placeholder="ex. 3B" autocomplete="off" />
+    </div>
+    <div id="rec-error" class="form-error"></div>
+    <div id="rec-success" class="modal-success" style="display:none"></div>
+    <div style="margin-top:1rem;display:flex;gap:.5rem;flex-wrap:wrap">
+      <button class="btn btn-primary btn-sm" onclick="recoverIdentity()">Retrouver mes inscriptions</button>
+      <button class="btn btn-cancel btn-sm" onclick="toggleRecovery()">Fermer</button>
+    </div>
+  </div>
+</footer>
+
 <!-- Firebase SDKs -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
 <script>
+// ─── Config — EDIT THESE TWO LINES ───────────────────────────────────────────
 const ADMIN_PASSWORD = 'fancy_fair_2026';
 const FIREBASE_URL   = 'https://planningorangerie-default-rtdb.europe-west1.firebasedatabase.app';
 
@@ -238,16 +290,12 @@ let db = null, signupsRef = null, configRef = null;
 let currentSlot = null;
 let liveSignups = {};
 let gridConfig = {
-  title: 'Fancy Fair 2026',
+  title: 'Fancy Faire 2026',
   times: ['10h00 – 11h00','11h30 – 12h30','12h30 – 13h30','13h30 – 14h30','15h30 – 16h30','16h30 – 17h30'],
   locations: ['Jeu de massacre','Château gonflable','Pêche aux canards','Sumo','Maquillage','Jeux en bois']
 };
 
-// Identity — stored per-token in localStorage
-// Multiple identities can coexist: each has its own token key
-// Active token key: 'signup_active_token'
-// Identity data key: 'signup_id_{token}' → {token, name, email, kid, class}
-
+// ─── Identity ─────────────────────────────────────────────────────────────────
 function genToken() {
   return 'tok_' + Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2);
 }
@@ -255,9 +303,7 @@ function genToken() {
 function getActiveIdentity() {
   const token = localStorage.getItem('signup_active_token');
   if (!token) return null;
-  const raw = localStorage.getItem('signup_id_' + token);
-  if (!raw) return null;
-  try { return JSON.parse(raw); } catch { return null; }
+  try { return JSON.parse(localStorage.getItem('signup_id_' + token)); } catch { return null; }
 }
 
 function saveIdentity() {
@@ -266,14 +312,10 @@ function saveIdentity() {
   const kid   = document.getElementById('id-kid').value.trim();
   const klass = document.getElementById('id-class').value.trim();
   const err   = document.getElementById('id-error');
-
   if (!name)  { err.textContent = 'Veuillez entrer votre nom.'; return; }
   if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { err.textContent = 'Veuillez entrer une adresse e-mail valide.'; return; }
   if (!kid)   { err.textContent = "Veuillez entrer le prénom de votre enfant."; return; }
   if (!klass) { err.textContent = 'Veuillez entrer la classe.'; return; }
-
-  // Check if this email already has a token (returning user on new device or same device)
-  // We just create a new token — each device gets its own
   const token = genToken();
   const identity = { token, name, email, kid, class: klass };
   localStorage.setItem('signup_id_' + token, JSON.stringify(identity));
@@ -281,10 +323,47 @@ function saveIdentity() {
   showGrid();
 }
 
-function switchUser() {
-  // Don't delete old token — just clear the active pointer so a new identity can be created
-  localStorage.removeItem('signup_active_token');
-  showIdentityScreen();
+// ─── Recovery ─────────────────────────────────────────────────────────────────
+function toggleRecovery() {
+  const form = document.getElementById('recovery-form');
+  form.style.display = form.style.display === 'none' ? '' : 'none';
+  document.getElementById('rec-error').textContent = '';
+  document.getElementById('rec-success').style.display = 'none';
+}
+
+function recoverIdentity() {
+  const name  = document.getElementById('rec-name').value.trim();
+  const email = document.getElementById('rec-email').value.trim().toLowerCase();
+  const kid   = document.getElementById('rec-kid').value.trim();
+  const klass = document.getElementById('rec-class').value.trim();
+  const err   = document.getElementById('rec-error');
+  const suc   = document.getElementById('rec-success');
+  err.textContent = '';
+  suc.style.display = 'none';
+
+  if (!name || !email || !kid || !klass) { err.textContent = 'Veuillez remplir tous les champs.'; return; }
+
+  // Search live signups for a matching entry
+  const match = Object.values(liveSignups).find(e =>
+    e.email === email &&
+    e.name.toLowerCase() === name.toLowerCase() &&
+    e.kid.toLowerCase() === kid.toLowerCase() &&
+    (e.class || '').toLowerCase() === klass.toLowerCase()
+  );
+
+  if (!match) {
+    err.textContent = 'Aucune inscription trouvée avec ces informations. Vérifiez l\'orthographe exacte.';
+    return;
+  }
+
+  // Restore the token from the matched entry
+  const identity = { token: match.token, name: match.name, email: match.email, kid: match.kid, class: match.class };
+  localStorage.setItem('signup_id_' + match.token, JSON.stringify(identity));
+  localStorage.setItem('signup_active_token', match.token);
+
+  suc.style.display = '';
+  suc.textContent = `✓ Inscriptions retrouvées pour ${match.kid} ! Rechargement en cours…`;
+  setTimeout(() => location.reload(), 1500);
 }
 
 // ─── UI state ─────────────────────────────────────────────────────────────────
@@ -292,9 +371,6 @@ function showIdentityScreen() {
   document.getElementById('identity-screen').style.display = '';
   document.getElementById('grid-area').style.display = 'none';
   document.getElementById('identity-bar').style.display = 'none';
-  // Pre-clear fields
-  ['id-name','id-email','id-kid','id-class'].forEach(id => document.getElementById(id).value = '');
-  document.getElementById('id-error').textContent = '';
 }
 
 function showGrid() {
@@ -302,8 +378,8 @@ function showGrid() {
   if (!id) { showIdentityScreen(); return; }
   document.getElementById('identity-screen').style.display = 'none';
   document.getElementById('grid-area').style.display = '';
-  document.getElementById('identity-bar').style.display = 'flex';
-  document.getElementById('identity-name').textContent = `${id.name} (${id.kid}, ${id.class})`;
+  document.getElementById('identity-bar').style.display = '';
+  document.getElementById('identity-name').textContent = `${id.name} – ${id.kid} (${id.class})`;
   renderGrid();
 }
 
@@ -346,7 +422,7 @@ function saveFirebaseUrl() {
 function applyConfig() {
   const times     = document.getElementById('cfg-times').value.trim().split('\n').map(s=>s.trim()).filter(Boolean);
   const locations = document.getElementById('cfg-locations').value.trim().split('\n').map(s=>s.trim()).filter(Boolean);
-  const title     = document.getElementById('cfg-title').value.trim() || 'Signup Grid';
+  const title     = document.getElementById('cfg-title').value.trim() || 'Planning';
   if (!times.length || !locations.length) { alert('Il faut au moins un créneau et une activité'); return; }
   gridConfig = { title, times, locations };
   if (configRef) configRef.set(gridConfig);
@@ -361,11 +437,11 @@ function slotKey(ti, li) { return `t${ti}_l${li}`; }
 
 function renderGrid() {
   const id = getActiveIdentity();
-  if (!document.getElementById('grid-area') || document.getElementById('grid-area').style.display === 'none') return;
-
-  document.title = gridConfig.title + ' — Signup Grid';
+  if (document.getElementById('grid-area').style.display === 'none') return;
+  document.title = gridConfig.title + ' — Orangerie';
   const head = document.getElementById('grid-head');
   const body = document.getElementById('grid-body');
+  const admin = isAdmin();
 
   let headHTML = '<tr><th>Horaire</th>';
   gridConfig.locations.forEach(loc => {
@@ -380,38 +456,50 @@ function renderGrid() {
     gridConfig.locations.forEach((loc, li) => {
       const key   = slotKey(ti, li);
       const entry = liveSignups[key];
-      if (entry) {
-        const isMe = id && entry.token === id.token;
-        const kidLabel   = escHtml(entry.kid || '');
-        const classLabel = escHtml(entry.class || '');
-        const adminTooltip = `${entry.kid || ''} (${entry.class || ''}) · ${entry.name || ''} · ${entry.email || ''}`;
-        const userTooltip  = `${entry.kid || ''} (${entry.class || ''})`;
-        const tooltip = isAdmin() ? adminTooltip : userTooltip;
-        // Admin sees email as sub-line; regular users see class only
-        const subLine = isAdmin()
-          ? `${classLabel} · <span style="color:var(--muted);font-style:italic">${escHtml(entry.email || '')}</span>`
-          : classLabel;
-        if (isMe) {
-          bodyHTML += `<td class="slot mine" onclick="promptUnbook('${key}','${escAttr(time)}','${escAttr(loc)}')">
-            <div class="slot-content">
-              <div style="min-width:0">
-                <span class="slot-badge mine-badge" title="${escAttr(adminTooltip)}">${kidLabel}</span>
-                <div class="slot-sub mine-sub">${subLine}</div>
-              </div>
-              <button class="unbook-btn" title="Annuler votre inscription">✕</button>
+
+      if (admin) {
+        // ── Admin view: full details + delete button ──
+        if (entry) {
+          bodyHTML += `<td class="slot taken admin-cell">
+            <div class="admin-cell-inner">
+              <div class="admin-kid">${escHtml(entry.name || '—')}</div>
+              <div class="admin-detail"><span>${escHtml(entry.kid || '—')} (${escHtml(entry.class || '—')})</span></div>
+              <div class="admin-detail">E-mail : <span>${escHtml(entry.email || '—')}</span></div>
+              <button class="admin-delete" onclick="adminDelete('${key}','${escAttr(entry.name || entry.kid || '')}','${escAttr(time)}','${escAttr(loc)}')">🗑 Supprimer</button>
             </div></td>`;
         } else {
-          bodyHTML += `<td class="slot taken">
-            <div class="slot-content">
-              <div style="min-width:0">
-                <span class="slot-badge taken-badge" title="${escAttr(tooltip)}">${kidLabel}</span>
-                <div class="slot-sub">${subLine}</div>
-              </div>
-            </div></td>`;
+          bodyHTML += `<td class="slot admin-cell free-cell" onclick="openModal(${ti},${li},'${escAttr(time)}','${escAttr(loc)}')">
+            <span class="slot-badge free">+ s'inscrire</span></td>`;
         }
       } else {
-        bodyHTML += `<td class="slot" onclick="openModal(${ti},${li},'${escAttr(time)}','${escAttr(loc)}')">
-          <span class="slot-badge free">+ s'inscrire</span></td>`;
+        // ── Regular user view ──
+        if (entry) {
+          const isMe      = id && entry.token === id.token;
+          const nameLabel = escHtml(entry.name || '');
+          const subLabel  = `${escHtml(entry.kid || '')} (${escHtml(entry.class || '')})`;
+          const userTip   = `${entry.name || ''} — ${entry.kid || ''} (${entry.class || ''})`;
+          if (isMe) {
+            bodyHTML += `<td class="slot mine" onclick="promptUnbook('${key}','${escAttr(time)}','${escAttr(loc)}')">
+              <div class="slot-content">
+                <div style="min-width:0">
+                  <span class="slot-badge mine-badge" title="${escAttr(userTip)}">${nameLabel}</span>
+                  <div class="slot-sub mine-sub">${subLabel}</div>
+                </div>
+                <button class="unbook-btn" title="Annuler votre inscription">✕</button>
+              </div></td>`;
+          } else {
+            bodyHTML += `<td class="slot taken">
+              <div class="slot-content">
+                <div style="min-width:0">
+                  <span class="slot-badge taken-badge" title="${escAttr(userTip)}">${nameLabel}</span>
+                  <div class="slot-sub">${subLabel}</div>
+                </div>
+              </div></td>`;
+          }
+        } else {
+          bodyHTML += `<td class="slot" onclick="openModal(${ti},${li},'${escAttr(time)}','${escAttr(loc)}')">
+            <span class="slot-badge free">+ s'inscrire</span></td>`;
+        }
       }
     });
     bodyHTML += '</tr>';
@@ -426,7 +514,7 @@ function openModal(ti, li, time, loc) {
   currentSlot = { ti, li, time, loc };
   document.getElementById('modal-slot-info').textContent = `${time}  ·  ${loc}`;
   document.getElementById('modal-identity-summary').textContent =
-    `${id.name}  ·  ${id.kid} (${id.class})  ·  ${id.email}`;
+    `${id.name}  ·  ${id.kid} (${id.class})`;
   document.getElementById('modal-error').textContent = '';
   document.getElementById('modal').classList.add('open');
 }
@@ -445,7 +533,6 @@ function confirmSignup() {
   if (!id) { closeModal(); showIdentityScreen(); return; }
   if (!signupsRef) { document.getElementById('modal-error').textContent = 'Pas encore connecté à la base de données.'; return; }
 
-  // One booking per row per token
   const rowKey = `t${currentSlot.ti}_`;
   const alreadyInRow = Object.entries(liveSignups).find(([k, v]) =>
     k.startsWith(rowKey) && v.token === id.token
@@ -458,14 +545,9 @@ function confirmSignup() {
     return;
   }
 
-  const key = slotKey(currentSlot.ti, currentSlot.li);
-  signupsRef.child(key).set({
-    token:     id.token,
-    name:      id.name,
-    email:     id.email,
-    kid:       id.kid,
-    class:     id.class,
-    timestamp: Date.now()
+  signupsRef.child(slotKey(currentSlot.ti, currentSlot.li)).set({
+    token: id.token, name: id.name, email: id.email,
+    kid: id.kid, class: id.class, timestamp: Date.now()
   });
   closeModal();
 }
@@ -475,6 +557,12 @@ function promptUnbook(key, time, loc) {
   const entry = liveSignups[key];
   if (!entry || !id || entry.token !== id.token) return;
   if (confirm(`Annuler l'inscription de ${id.kid} pour ${time} · ${loc} ?`)) {
+    signupsRef.child(key).remove();
+  }
+}
+
+function adminDelete(key, kid, time, loc) {
+  if (confirm(`[Admin] Supprimer l'inscription de ${kid} pour ${time} · ${loc} ?`)) {
     signupsRef.child(key).remove();
   }
 }
@@ -493,12 +581,10 @@ function isAdmin() {
 
 // ─── Boot ─────────────────────────────────────────────────────────────────────
 (function boot() {
-  // Admin UI
   const admin = isAdmin();
   document.getElementById('admin-badge').style.display = admin ? 'inline-flex' : 'none';
   document.getElementById('config-panel')[admin ? 'removeAttribute' : 'setAttribute']('hidden', '');
 
-  // Firebase
   const fbUrl = FIREBASE_URL || localStorage.getItem('signup_grid_fb_url');
   if (fbUrl) {
     document.getElementById('fb-url-input').value = fbUrl;
@@ -508,7 +594,6 @@ function isAdmin() {
   }
   if (!admin) document.getElementById('firebase-setup').style.display = 'none';
 
-  // Identity
   const id = getActiveIdentity();
   if (id) { showGrid(); } else { showIdentityScreen(); }
 })();
